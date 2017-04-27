@@ -23,11 +23,20 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <div class="controls">
+      <button id="clear" type="button" name="button">Clear All</button>
+      <button id="all" type="button" name="button">Select All</button>
+      <button id="clear-list" type="button" name="button">Remove all</button>
+    </div>
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
+  const clearButton = document.getElementById('action-clear');
+  const selectAllButton = document.getElementById('action-select-all');
+  const controls = document.querySelector('.controls');
+
   const items = JSON.parse(localStorage.getItem('items')) || [];
 
   function addItem(event){
@@ -43,7 +52,6 @@
     localStorage.setItem('items', JSON.stringify(items));
     this.reset();
   }
-
   function populateList(plates = [], platesList) {
     platesList.innerHTML = plates.map((plate, i) => {
       return `
@@ -54,7 +62,6 @@
       `
     }).join('');
   }
-
   function toggleDone(event) {
     if(!event.target.matches('input')) return // Skip this
 
@@ -64,12 +71,35 @@
     localStorage.setItem('items', JSON.stringify(items));
     populateList(items, itemsList);
   }
-
+  function clearItems(plates, toggle) {
+    return plates.map((plates)=> {
+      return {
+        'text': plates.text,
+        'done' : plates.done = toggle
+      }
+    });
+  }
 
   addItems.addEventListener('submit', addItem);
   itemsList.addEventListener('click', toggleDone);
-  populateList(items, itemsList);
+  controls.addEventListener('click', (e)=>{
+    let btn = e.target;
+    let isClearallBtn = btn.id !== 'clear';
 
+    if( btn.id === 'clear' ||  btn.id === 'all') {
+      populateList(clearItems(items, isClearallBtn), itemsList);
+      localStorage.setItem('items', JSON.stringify(clearItems(items, isClearallBtn)));
+    }
+
+    if( btn.id === 'clear-list'){
+      items.length = 0;
+      populateList(items, itemsList);
+      localStorage.setItem('items', JSON.stringify(items));
+    }
+
+  });
+
+  populateList(items, itemsList);
 </script>
 
 
