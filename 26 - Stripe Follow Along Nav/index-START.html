@@ -214,6 +214,31 @@
 </style>
 
 <script>
+
+const nav = document.querySelector('.top');
+const list = document.querySelectorAll('.cool > li');
+const background = document.querySelector('.dropdownBackground');
+
+function handleEnter(){
+  const content = this.classList.add('trigger-enter');
+  setTimeout(()=> this.classList.add('trigger-enter-active'), 150);
+  background.classList.add('open');
+
+  const dropDown = this.querySelector('.dropdown');
+  const dropDownCoords = dropDown.getBoundingClientRect();
+  console.log(dropDownCoords);
+}
+
+function handleLeaver(){
+  const content = this.classList.remove('trigger-enter', 'trigger-enter-active');
+  background.classList.remove('open');
+}
+
+list.forEach(function(item){
+  item.addEventListener('mouseenter', handleEnter);
+  item.addEventListener('mouseleave', handleLeaver);
+});
+
 </script>
 
 </body>

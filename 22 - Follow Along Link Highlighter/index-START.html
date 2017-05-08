@@ -27,7 +27,29 @@
 
   <script>
     // 👀👀👀👀👀👀👀👀👀👀👀👀👀👀👀
+    const links = document.querySelectorAll('a');
+    const spanEl = document.createElement('span');
+
+    spanEl.classList.add('highlight');
+    document.body.appendChild(spanEl);
+
+    function triggerLink() {
+      const bounding = this.getBoundingClientRect();
+      const bound = {
+        width: bounding.width,
+        height: bounding.height,
+        left: bounding.left + window.scrollX,
+        top: bounding.top + window.scrollY
+      }
+
+      spanEl.style.width = `${bound.width}px`;
+      spanEl.style.height = `${bound.height}px`;
+      spanEl.style.transform = `translate(${bound.left}px, ${bound.top}px)`
+    }
+
+    links.forEach(function(link, index){
+      link.addEventListener('mouseover', triggerLink);
+    });
   </script>
 </body>
 </html>
-
